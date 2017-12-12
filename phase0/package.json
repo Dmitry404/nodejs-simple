@@ -4,11 +4,11 @@
   "description": "A very basic sample project - phase 0",
   "author": "Dmitriy Butakov <dbutakov@lohika.com>",
   "scripts": {
-    "start": "npm run db:start && node src/server.js",
+    "start": "npm run db:start && nodemon --config conf/nodemon.json src/server.js",
     "test": "",
-    "eslint": "./node_modules/.bin/eslint -c conf/eslintrc.json src/**",
+    "eslint": "eslint -c conf/eslintrc.json src/**",
     "db:start": "echo \"starting db\"",
-    "db:stop": "",
+    "db:stop": "echo \"stopping db\"",
     "prepush": "npm test",
     "precommit": "npm run eslint"
   },
