@@ -1,4 +1,3 @@
-const bodyParser = require('body-parser');
 const compression = require('compression');
 const morgan = require('morgan');
 const winston = require('winston');
@@ -19,11 +18,11 @@ router.get('/api/v1/readme', (req, res) => {
       'Content-Type': 'text/markdown',
     },
   };
-  res.sendFile('README.md', options);
+  res.sendFile('static/README.md', options);
 });
 
 router.use((req, res) => {
-  res.status(404).sendFile(path.resolve(__dirname, '404.png'));
+  res.status(404).sendFile(path.resolve(__dirname, 'static/404.png'));
 });
 
 router.use((err, req, res) => {
@@ -36,5 +35,6 @@ router.use((err, req, res) => {
 });
 
 app.use(morgan('combined'));
+app.use(compression());
 app.use('/', router);
-app.listen(3000, () => winston.info('Phase 1 app is running on http://localhost:3000'));
+app.listen(3000, () => winston.info(`Phase 1 app has been started on http://localhost:3000 at ${moment().toISOString()}`));
