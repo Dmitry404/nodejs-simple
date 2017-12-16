@@ -7,10 +7,12 @@
     "start": "npm run db:start && nodemon --config conf/nodemon.json src/server.js",
     "test": "",
     "eslint": "eslint -c conf/eslintrc.json src/**",
-    "db:start": "echo \"starting db\"",
-    "db:stop": "echo \"stopping db\"",
+    "db:start": "docker start nodejs-phase0-db",
+    "db:stop": "docker stop nodejs-phase0-db",
     "prepush": "npm test",
-    "precommit": "npm run eslint"
+    "precommit": "npm run eslint",
+    "postinstall": "docker run -p 3388:3306 --name=nodejs-phase0-db -e MYSQL_ROOT_PASSWORD=secret -d mysql:5.5 && docker stop nodejs-phase0-db",
+    "uninstall": "npm run db:stop || true && docker rm nodejs-phase0-db"
   },
   "devDependencies": {
     "ava": "^0.24.0",
