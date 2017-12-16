@@ -1,6 +1,7 @@
 const bodyParser = require('body-parser');
 const compression = require('compression');
 const morgan = require('morgan');
+const winston = require('winston');
 const moment = require('moment');
 const express = require('express');
 const path = require('path');
@@ -25,6 +26,15 @@ router.use((req, res) => {
   res.status(404).sendFile(path.resolve(__dirname, '404.png'));
 });
 
+router.use((err, req, res) => {
+  winston.error(err);
+  if (app.get('env') === 'development') {
+    res.status(500).send(err.stack);
+  } else {
+    res.status(500).end();
+  }
+});
+
 app.use(morgan('combined'));
 app.use('/', router);
-app.listen(3000, () => console.log('Phase 1 app is running on http://localhost:3000'));
+app.listen(3000, () => winston.info('Phase 1 app is running on http://localhost:3000'));
