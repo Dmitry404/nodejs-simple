@@ -3,6 +3,7 @@ const compression = require('compression');
 const morgan = require('morgan');
 const moment = require('moment');
 const express = require('express');
+const path = require('path');
 
 const app = express();
 const router = express.Router();
@@ -20,5 +21,10 @@ router.get('/api/v1/readme', (req, res) => {
   res.sendFile('README.md', options);
 });
 
+router.use((req, res) => {
+  res.status(404).sendFile(path.resolve(__dirname, '404.png'));
+});
+
+app.use(morgan('combined'));
 app.use('/', router);
 app.listen(3000, () => console.log('Phase 1 app is running on http://localhost:3000'));
