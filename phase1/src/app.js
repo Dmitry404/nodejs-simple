@@ -1,7 +1,6 @@
 const compression = require('compression');
 const morgan = require('morgan');
 const winston = require('winston');
-const moment = require('moment');
 const express = require('express');
 const path = require('path');
 const swaggerUi = require('swagger-ui-express');
@@ -40,4 +39,5 @@ app.use(morgan('combined'));
 app.use(compression());
 app.use('/v1/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 app.use('/', router);
-app.listen(3000, () => winston.info(`Phase 1 app has been started on http://localhost:3000 at ${moment().toISOString()}`));
+
+module.exports = app;

@@ -4,7 +4,7 @@
   "description": "A bit more complicated sample project - phase 1",
   "author": "Dmitriy Butakov <dbutakov@lohika.com>",
   "scripts": {
-    "start": "npm run db:start && nodemon --config conf/nodemon.json src/app.js",
+    "start": "npm run db:start && nodemon --config conf/nodemon.json src/server.js",
     "test": "",
     "eslint": "eslint -c conf/eslintrc.json --ignore-path conf/eslintignore src/**",
     "db:start": "docker start nodejs-phase1-db",
