@@ -11,8 +11,8 @@
     "db:stop": "docker stop nodejs-phase1-db",
     "prepush": "npm test",
     "precommit": "npm run eslint",
-    "postinstall": "docker run -p 3399:3306 --name=nodejs-phase1-db -e MYSQL_ROOT_PASSWORD=secret -d mysql:5.5 && docker stop nodejs-phase0-db",
-    "uninstall": "npm run db:stop || true && docker rm nodejs-phase1s-db"
+    "postinstall": "docker run -p 3399:3306 --name=nodejs-phase1-db -e MYSQL_ROOT_PASSWORD=secret -d mysql:5.5 && docker stop nodejs-phase1-db",
+    "uninstall": "npm run db:stop || true && docker rm nodejs-phase1-db"
   },
   "devDependencies": {
     "ava": "^0.24.0",
