@@ -7,5 +7,5 @@ const hostname = 'localhost';
 const port = 3000;
 
 http.createServer(app).listen(port, () => {
-  winston.info(`Phase 1 app has been started on http://${hostname}:${port} at ${moment().toISOString()}`);
+  winston.info(`Phase 2 app has been started on http://${hostname}:${port} at ${moment().toISOString()}`);
 });
