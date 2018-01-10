@@ -1,7 +1,7 @@
 {
-  "name": "nodejs-course-phase2",
-  "version": "0.2.0",
-  "description": "A bit more complicated sample project - phase 2",
+  "name": "nodejs-course-phase3",
+  "version": "0.3.0",
+  "description": "A bit more complicated sample project - phase 3",
   "author": "Dmitriy Butakov <dbutakov@lohika.com>",
   "license": "0BSD",
   "repository": "https://github.com/Dmitry404/nodejs-simple",
