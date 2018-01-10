@@ -5,16 +5,23 @@
   "author": "Dmitriy Butakov <dbutakov@lohika.com>",
   "license": "0BSD",
   "repository": "https://github.com/Dmitry404/nodejs-simple",
+  "config": {
+    "docker": {
+      "image": "mysql:5.5",
+      "container": "nodejs-bookshelf-db",
+      "port": 3360
+    }
+  },
   "scripts": {
     "start": "npm run db:start && nodemon --config conf/nodemon.json src/server.js",
     "test": "",
     "eslint": "eslint -c conf/eslintrc.json --ignore-path conf/eslintignore src/**",
-    "db:start": "docker start nodejs-phase2-db",
-    "db:stop": "docker stop nodejs-phase2-db",
+    "db:start": "docker start $npm_package_config_docker_container",
+    "db:stop": "docker stop $npm_package_config_docker_container",
     "prepush": "npm test",
     "precommit": "npm run eslint",
-    "postinstall": "docker run -p 3360:3306 --name=nodejs-phase2-db -e MYSQL_ROOT_PASSWORD=secret -e MYSQL_DATABASE=bookshelf -d mysql:5.5 && docker stop nodejs-phase2-db",
-    "uninstall": "npm run db:stop || true && docker rm nodejs-phase2-db"
+    "postinstall": "docker run -p $npm_package_config_docker_port:3306 --name=$npm_package_config_docker_container -e MYSQL_ROOT_PASSWORD=secret -e MYSQL_DATABASE=bookshelf -d $npm_package_config_docker_image && docker stop $npm_package_config_docker_container",
+    "uninstall": "npm run db:stop || true && docker rm $npm_package_config_docker_container"
   },
   "devDependencies": {
     "ava": "^0.24.0",
