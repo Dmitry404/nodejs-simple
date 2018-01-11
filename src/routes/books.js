@@ -22,4 +22,16 @@ books.get('/', (req, res) => {
   });
 });
 
+books.get('/:bookId', (req, res) => {
+  const { bookId } = req.params;
+  Book.findById(bookId, {
+    include: [{
+      model: Author,
+      attributes: ['name'],
+    }],
+  }).then((book) => {
+    res.json(book);
+  });
+});
+
 module.exports = books;
