@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 
 module.exports = (sequelize) => {
-  sequelize.define('book_review', {
+  const BookReview = sequelize.define('book_review', {
     id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
@@ -9,4 +9,5 @@ module.exports = (sequelize) => {
     },
     comment: Sequelize.STRING,
   });
+  return BookReview;
 };

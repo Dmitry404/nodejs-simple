@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 
 module.exports = (sequelize) => {
-  sequelize.define('user', {
+  const User = sequelize.define('user', {
     id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
@@ -17,4 +17,5 @@ module.exports = (sequelize) => {
       fields: ['email'],
     }],
   });
+  return User;
 };
