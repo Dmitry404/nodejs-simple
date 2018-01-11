@@ -22,6 +22,7 @@ Author.belongsToMany(Book, { through: 'authors_books' });
 
 Book.hasMany(BookReview);
 User.hasMany(BookReview);
+BookReview.belongsTo(User);
 
 Book.hasMany(BookRate);
 User.hasMany(BookRate);

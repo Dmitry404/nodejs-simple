@@ -1,7 +1,7 @@
 const express = require('express');
 const Sequelize = require('sequelize');
 const {
-  Book, Author, BookRate,
+  Book, Author, BookRate, BookReview, User,
 } = require('../models');
 
 const books = express.Router();
@@ -31,6 +31,24 @@ books.get('/:bookId', (req, res) => {
     }],
   }).then((book) => {
     res.json(book);
+  });
+});
+
+books.get('/:bookId/reviews', (req, res, next) => {
+  const { bookId } = req.params;
+  BookReview.findAll({
+    where: {
+      bookId,
+    },
+    attributes: ['comment', 'createdAt'],
+    include: [{
+      model: User,
+      attributes: ['name'],
+    }],
+  }).then((comments) => {
+    res.json(comments);
+  }).catch((err) => {
+    next(err);
   });
 });
 
