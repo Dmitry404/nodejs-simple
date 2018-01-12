@@ -1,6 +1,7 @@
 const compression = require('compression');
 const morgan = require('morgan');
 const express = require('express');
+const bodyParser = require('body-parser');
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const {
@@ -11,6 +12,7 @@ const app = express();
 
 app.use(morgan('combined'));
 app.use(compression());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const swaggerDoc = YAML.load('conf/swagger.yaml');
 app.use('/v1/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDoc));

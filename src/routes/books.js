@@ -56,6 +56,20 @@ books.get('/:bookId/reviews', (req, res, next) => {
   });
 });
 
+books.post('/:bookId/reviews', (req, res, next) => {
+  const { bookId } = req.params;
+  const { comment, userId } = req.body;
+  BookReview.create({
+    comment,
+    bookId,
+    userId,
+  }).then((bookReview) => {
+    res.status(201).json(bookReview);
+  }).catch((err) => {
+    next(err);
+  });
+});
+
 books.get('/most-reviewed/:limit(\\d+)?', (req, res, next) => {
   const limit = parseInt(req.params.limit || 5, 10);
   Book.findAll({
