@@ -132,4 +132,18 @@ books.get('/by-rate/:from(\\d+)-:to(\\d+)', (req, res, next) => {
   });
 });
 
+books.post('/:bookId/rates', (req, res, next) => {
+  const { bookId } = req.params;
+  const { rate, userId } = req.body;
+  BookRate.create({
+    rate,
+    bookId,
+    userId,
+  }).then((bookRate) => {
+    res.status(201).json(bookRate);
+  }).catch((err) => {
+    next(err);
+  });
+});
+
 module.exports = books;

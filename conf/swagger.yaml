@@ -134,6 +134,36 @@ paths:
           description: "author ID"
           required: true
           type: integer
+  '/books/{bookId}/rates':
+      post:
+        description: "Returns user rates based on a single book ID"
+        tags:
+        - "books"
+        produces:
+        - "application/json"
+        responses:
+          200:
+            description: "user rate which has been posted"
+            schema:
+              $ref: "#/definitions/BookRate"
+        parameters:
+          - name: "bookId"
+            in: "path"
+            description: "ID of the book to rate"
+            required: true
+            type: integer
+          - name: "userId"
+            in: "body"
+            description: "ID of the user who rates book"
+            required: true
+            type: integer
+          - name: "rate"
+            in: "body"
+            description: "Rate value"
+            required: true
+            type: integer
+            minimum: 1
+            maximum: 5
   '/books/by-rate/{from}-{to}':
     get:
       description: "Returns books which have rate based on a range {from}-{to}"
@@ -150,11 +180,15 @@ paths:
           description: "min book rate to include into result"
           required: true
           type: integer
+          minimum: 1
+          maximum: 5
         - name: "to"
           in: "path"
           description: "max book rate to include into result"
           required: true
           type: integer
+          minimum: 1
+          maximum: 5
 definitions:
   BookReview:
     type: "object"
@@ -168,6 +202,24 @@ definitions:
       userId:
         type: "integer"
       createdAt:
-        type: "date"
+        type: "string"
+        format: "date-time"
       updatedAt:
-        type: "date"
+        type: "string"
+        format: "date-time"
+  BookRate:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      rate:
+        type: "integer"
+        minimum: 1
+        maximum: 5
+      bookId:
+        type: "integer"
+      userId:
+        type: "integer"
+      createdAt:
+        type: "string"
+        format: "date-time"
