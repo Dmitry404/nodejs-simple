@@ -6,7 +6,7 @@ const {
 
 const books = express.Router();
 
-books.get('/', (req, res) => {
+books.get('/', (req, res, next) => {
   Book.findAll({
     include: [{
       model: Author,
@@ -19,10 +19,12 @@ books.get('/', (req, res) => {
     group: ['book.id'],
   }).then((result) => {
     res.json(result);
+  }).catch((err) => {
+    next(err);
   });
 });
 
-books.get('/:bookId(\\d+)', (req, res) => {
+books.get('/:bookId(\\d+)', (req, res, next) => {
   const { bookId } = req.params;
   Book.findById(bookId, {
     include: [{
@@ -31,6 +33,8 @@ books.get('/:bookId(\\d+)', (req, res) => {
     }],
   }).then((book) => {
     res.json(book);
+  }).catch((err) => {
+    next(err);
   });
 });
 
