@@ -64,10 +64,10 @@ books.get('/most-reviewed/:limit(\\d+)?', (req, res, next) => {
       attributes: [],
       duplicating: false,
     }],
-    attributes: ['id', 'title', [Sequelize.fn('count', Sequelize.col('book_reviews.id')), 'reviews_count']],
+    attributes: ['id', 'title', [Sequelize.fn('COUNT', Sequelize.col('book_reviews.id')), 'reviews_count']],
     group: ['book.id', 'book.title'],
     order: [
-      [Sequelize.fn('count', Sequelize.col('book_reviews.id')), 'DESC'],
+      [Sequelize.fn('COUNT', Sequelize.col('book_reviews.id')), 'DESC'],
     ],
     limit,
   }).then((result) => {
@@ -88,6 +88,29 @@ books.get('/by-author/:authorId(\\d+)', (req, res, next) => {
       attributes: [],
     }],
     attributes: ['id', 'title'],
+  }).then((result) => {
+    res.send(result);
+  }).catch((err) => {
+    next(err);
+  });
+});
+
+books.get('/by-rate/:from(\\d+)-:to(\\d+)', (req, res, next) => {
+  const { from, to } = req.params;
+  Book.findAll({
+    include: [{
+      model: BookRate,
+      attributes: [],
+    }],
+    attributes: ['id', 'title', [Sequelize.fn('AVG', Sequelize.col('book_rates.rate')), 'avg_rate']],
+    group: ['book.id', 'book.title'],
+    having: Sequelize.where(Sequelize.fn('AVG', Sequelize.col('book_rates.rate')), {
+      $gte: parseInt(from, 10),
+      $lte: parseInt(to, 10),
+    }),
+    order: [
+      Sequelize.fn('AVG', Sequelize.col('book_rates.rate')),
+    ],
   }).then((result) => {
     res.send(result);
   }).catch((err) => {
