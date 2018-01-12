@@ -77,4 +77,22 @@ books.get('/most-reviewed/:limit(\\d+)?', (req, res, next) => {
   });
 });
 
+books.get('/by-author/:authorId(\\d+)', (req, res, next) => {
+  const { authorId } = req.params;
+  Book.findAll({
+    include: [{
+      model: Author,
+      where: {
+        id: authorId,
+      },
+      attributes: [],
+    }],
+    attributes: ['id', 'title'],
+  }).then((result) => {
+    res.send(result);
+  }).catch((err) => {
+    next(err);
+  });
+});
+
 module.exports = books;
