@@ -1,125 +1,173 @@
-swagger: '2.0'
+swagger: "2.0"
 info:
-  title: 'Node.js course : Phase 3 : Swagger'
-  description: A bit more complicated sample project
-  version: '0.3.0'
-host: localhost:3000
+  title: "Node.js course : Phase 3 : Swagger"
+  description: "A bit more complicated sample project"
+  version: "0.3.0"
+host: "localhost:3000"
+basePath: "/"
 schemes:
-  - http
-basePath: /
+- "http"
+tags:
+- name: "books"
+  description: "REST endpoints related to 'books' collection"
+- name: "default"
+  description: "Anything which didn't get into one of the RESTs groups above"
 paths:
   '/api/v1/readme':
     get:
-      description: Welcomes user. That's all. Nothing more..
+      description: "Welcomes user. That's all. Nothing more.."
       produces:
-       - text/markdown
+      - "text/markdown"
       responses:
-        '200':
-          description: I'm fine
-        '304':
-          description: I'm still fine
+        200:
+          description: "I'm fine"
+        304:
+          description: "I'm still fine"
   '/books':
     get:
-      description: Returns all books including Authors and book's rate
+      description: "Returns all books including Authors and book's rate"
       tags:
-        - books
+      - "books"
       produces:
-        application/json
+      - "application/json"
       responses:
-        '200':
-          description: books collection
+        200:
+          description: "books collection"
   '/books/{bookId}':
     get:
-      description: Returns book info, including its authors, based on a single ID
+      description: "Returns book info, including its authors, based on a single ID"
       tags:
-        - books
+      - "books"
       produces:
-        application/json
+      - "application/json"
       responses:
-        '200':
-          description: book information
+        200:
+          description: "book information"
       parameters:
-        - name: bookId
-          in: path
-          description: ID of the book to fetch
+        - name: "bookId"
+          in: "path"
+          description: "ID of the book to fetch"
           required: true
           type: integer
   '/books/{bookId}/reviews':
     get:
-      description: Returns posted user reviews, based on a single book ID
+      description: "Returns posted user reviews, based on a single book ID"
       tags:
-        - books
+      - "books"
       produces:
-        application/json
+      - "application/json"
       responses:
-        '200':
-          description: user reviews
+        200:
+          description: "user reviews"
       parameters:
-        - name: bookId
-          in: path
-          description: ID of the book to fetch user reviews to
+        - name: "bookId"
+          in: "path"
+          description: "ID of the book to fetch user reviews to"
           required: true
           type: integer
+    post:
+      description: "Returns posted user reviews, based on a single book ID"
+      tags:
+      - "books"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "user review which has been posted"
+          schema:
+            $ref: "#/definitions/BookReview"
+      parameters:
+        - name: "bookId"
+          in: "path"
+          description: "ID of the book to post review"
+          required: true
+          type: integer
+        - name: "userId"
+          in: "body"
+          description: "ID of the user who posts review"
+          required: true
+          type: integer
+        - name: "comment"
+          in: "body"
+          description: "Book review comment"
+          required: true
+          type: string
   '/books/most-reviewed':
     get:
-      description: Returns top 5 books which have most user reviews
+      description: "Returns top 5 books which have most user reviews"
       tags:
-        - books
+      - "books"
       produces:
-        application/json
+      - "application/json"
       responses:
-        '200':
-          description: books collection
+        200:
+          description: "books collection"
   '/books/most-reviewed/{limit}':
     get:
-      description: Returns books which have most user reviews
+      description: "Returns books which have most user reviews"
       tags:
-        - books
+      - "books"
       produces:
-        application/json
+      - "application/json"
       responses:
-        '200':
-          description: books collection
+        200:
+          description: "books collection"
       parameters:
-        - name: limit
-          in: path
-          description: maximum number of results to return
+        - name: "limit"
+          in: "path"
+          description: "maximum number of results to return"
           required: true
           type: integer
   '/books/by-author/{authorId}':
     get:
-      description: Returns books which have at least one of the authors based on a single ID
+      description: "Returns books which have at least one of the authors based on a single ID"
       tags:
-        - books
+      - "books"
       produces:
-        application/json
+      - "application/json"
       responses:
-        '200':
-          description: books collection
+        200:
+          description: "books collection"
       parameters:
-        - name: authorId
-          in: path
-          description: author ID
+        - name: "authorId"
+          in: "path"
+          description: "author ID"
           required: true
           type: integer
   '/books/by-rate/{from}-{to}':
     get:
-      description: Returns books which have rate based on a range {from}-{to}
+      description: "Returns books which have rate based on a range {from}-{to}"
       tags:
-        - books
+      - "books"
       produces:
-        application/json
+      - "application/json"
       responses:
-        '200':
-          description: books collection
+        200:
+          description: "books collection"
       parameters:
-        - name: from
-          in: path
-          description: min book rate to include into result
+        - name: "from"
+          in: "path"
+          description: "min book rate to include into result"
           required: true
           type: integer
-        - name: to
-          in: path
-          description: max book rate to include into result
+        - name: "to"
+          in: "path"
+          description: "max book rate to include into result"
           required: true
           type: integer
+definitions:
+  BookReview:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      comment:
+        type: "string"
+      bookId:
+        type: "integer"
+      userId:
+        type: "integer"
+      createdAt:
+        type: "date"
+      updatedAt:
+        type: "date"
