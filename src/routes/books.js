@@ -52,4 +52,25 @@ books.get('/:bookId/reviews', (req, res, next) => {
   });
 });
 
+books.get('/most-reviewed/:limit(\\d+)?', (req, res, next) => {
+  const limit = parseInt(req.params.limit || 1, 10);
+  Book.findAll({
+    include: [{
+      model: BookReview,
+      attributes: [],
+      duplicating: false,
+    }],
+    attributes: ['id', 'title', [Sequelize.fn('count', Sequelize.col('book_reviews.id')), 'reviews_count']],
+    group: ['book.id', 'book.title'],
+    order: [
+      [Sequelize.fn('count', Sequelize.col('book_reviews.id')), 'DESC'],
+    ],
+    limit,
+  }).then((result) => {
+    res.send(result);
+  }).catch((err) => {
+    next(err);
+  });
+});
+
 module.exports = books;
