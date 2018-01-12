@@ -18,6 +18,8 @@ app.use('/', welcome);
 app.use('/authors', authors);
 app.use('/books', books);
 
+app.set('json spaces', app.get('env') === 'development' ? 2 : 0);
+
 app.use(errorHandlers.pageNotFound);
 app.use(errorHandlers.serverError);
 
