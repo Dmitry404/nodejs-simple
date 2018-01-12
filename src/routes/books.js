@@ -22,7 +22,7 @@ books.get('/', (req, res) => {
   });
 });
 
-books.get('/:bookId', (req, res) => {
+books.get('/:bookId(\\d+)', (req, res) => {
   const { bookId } = req.params;
   Book.findById(bookId, {
     include: [{
