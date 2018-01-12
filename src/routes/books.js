@@ -57,7 +57,7 @@ books.get('/:bookId/reviews', (req, res, next) => {
 });
 
 books.get('/most-reviewed/:limit(\\d+)?', (req, res, next) => {
-  const limit = parseInt(req.params.limit || 1, 10);
+  const limit = parseInt(req.params.limit || 5, 10);
   Book.findAll({
     include: [{
       model: BookReview,
