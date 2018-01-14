@@ -33,6 +33,66 @@ paths:
       responses:
         200:
           description: "books collection"
+    post:
+      description: "Adds a new book to collection"
+      tags:
+      - "books"
+      produces:
+      - "application/json"
+      responses:
+        201:
+          description: "The book which has been created"
+          schema:
+            $ref: "#/definitions/Book"
+      parameters:
+        - name: "title"
+          in: "body"
+          description: "Book's title"
+          required: false
+          type: string
+        - name: "isbn"
+          in: "body"
+          description: "Book's ISBN"
+          required: false
+          type: string
+        - name: "edition"
+          in: "body"
+          description: "Books's edition"
+          required: false
+          type: string
+        - name: "published"
+          in: "body"
+          description: "Book's published year"
+          required: false
+          type: integer
+        - name: "description"
+          in: "body"
+          description: "Book's description"
+          required: false
+          type: string
+        - name: "language"
+          in: "body"
+          description: "Language that the book is written on"
+          required: false
+          type: string
+        - name: "pages"
+          in: "body"
+          description: "Number of pages in the book"
+          required: false
+          type: integer
+        - name: "publisher"
+          in: "body"
+          description: "Book's publisher"
+          required: false
+          type: string
+        - name: "authors"
+          in: "body"
+          description: "Array of Book's authors IDs"
+          required: true
+          type: array
+          items: array
+            type: integer
+
   '/books/{bookId}':
     get:
       description: "Returns book info, including its authors, based on a single ID"
@@ -190,6 +250,35 @@ paths:
           minimum: 1
           maximum: 5
 definitions:
+  Book:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      title:
+        type: "string"
+      isbn:
+        type: "string"
+      edition:
+        type: "string"
+      published:
+        type: "string"
+      description:
+        type: "string"
+      language:
+        type: "string"
+      pages:
+        type: "integer"
+      publisher:
+        type: "string"
+      cover:
+        type: "string"
+      createdAt:
+        type: "string"
+        format: "date-time"
+      updatedAt:
+        type: "string"
+        format: "date-time"
   BookReview:
     type: "object"
     properties:

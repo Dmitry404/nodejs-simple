@@ -24,6 +24,22 @@ books.get('/', (req, res, next) => {
   });
 });
 
+books.post('/', (req, res, next) => {
+  const {
+    title, isbn, edition, published, description,
+    pages, publisher, authors,
+  } = req.body;
+
+  Book.create({
+    title, isbn, edition, published, description, pages, publisher,
+  }).then((book) => {
+    book.addAuthors(authors);
+    res.status(201).json(book);
+  }).catch((err) => {
+    next(err);
+  });
+});
+
 books.get('/:bookId(\\d+)', (req, res, next) => {
   const { bookId } = req.params;
   Book.findById(bookId, {
