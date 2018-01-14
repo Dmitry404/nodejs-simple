@@ -109,6 +109,63 @@ paths:
           description: "ID of the book to fetch"
           required: true
           type: integer
+    put:
+      description: "Updates book's info"
+      tags:
+      - "books"
+      produces:
+      - "application/json"
+      responses:
+        204:
+          description: "book has been updated"
+      parameters:
+        - name: "title"
+          in: "body"
+          description: "Book's title"
+          required: false
+          type: string
+        - name: "isbn"
+          in: "body"
+          description: "Book's ISBN"
+          required: false
+          type: string
+        - name: "edition"
+          in: "body"
+          description: "Books's edition"
+          required: false
+          type: string
+        - name: "published"
+          in: "body"
+          description: "Book's published year"
+          required: false
+          type: integer
+        - name: "description"
+          in: "body"
+          description: "Book's description"
+          required: false
+          type: string
+        - name: "language"
+          in: "body"
+          description: "Language that the book is written on"
+          required: false
+          type: string
+        - name: "pages"
+          in: "body"
+          description: "Number of pages in the book"
+          required: false
+          type: integer
+        - name: "publisher"
+          in: "body"
+          description: "Book's publisher"
+          required: false
+          type: string
+        - name: "authors"
+          in: "body"
+          description: "Array of Book's authors IDs"
+          required: false
+          type: array
+          items: array
+            type: integer
     delete:
       description: "Removes book based on a single ID"
       tags:
@@ -124,7 +181,7 @@ paths:
           description: "ID of the book to remove"
           required: true
           type: integer
-          
+
   '/books/{bookId}/reviews':
     get:
       description: "Returns posted user reviews, based on a single book ID"

@@ -40,15 +40,39 @@ books.post('/', (req, res, next) => {
   });
 });
 
-books.get('/:bookId(\\d+)', (req, res, next) => {
+books.put('/:bookId(\\d+)', (req, res, next) => {
+  const { bookId } = req.params;
+  const {
+    title, isbn, edition, published, description,
+    pages, publisher, authors,
+  } = req.body;
+
+  Book.update({
+    title, isbn, edition, published, description, pages, publisher,
+  }, {
+    where: { id: bookId },
+  }).then(() => {
+    if (Array.isArray(authors)) {
+      Book.findById(bookId, {
+        attributes: ['id'],
+      }).then((book) => {
+        book.setAuthors([]);
+        book.addAuthors(authors);
+      });
+    }
+    res.status(204).end();
+  }).catch((err) => {
+    next(err);
+  });
+});
+
+books.delete('/:bookId(\\d+)', (req, res, next) => {
   const { bookId } = req.params;
   Book.findById(bookId, {
-    include: [{
-      model: Author,
-      attributes: ['name'],
-    }],
+    attributes: ['id'],
   }).then((book) => {
-    res.json(book);
+    book.destroy();
+    res.status(204).end();
   }).catch((err) => {
     next(err);
   });
