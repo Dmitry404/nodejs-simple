@@ -54,6 +54,18 @@ books.get('/:bookId(\\d+)', (req, res, next) => {
   });
 });
 
+books.delete('/:bookId(\\d+)', (req, res, next) => {
+  const { bookId } = req.params;
+  Book.findById(bookId, {
+    attributes: ['id'],
+  }).then((book) => {
+    book.destroy();
+    res.status(204).end();
+  }).catch((err) => {
+    next(err);
+  });
+});
+
 books.get('/:bookId/reviews', (req, res, next) => {
   const { bookId } = req.params;
   BookReview.findAll({
