@@ -2,10 +2,11 @@ const compression = require('compression');
 const morgan = require('morgan');
 const express = require('express');
 const bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload');
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const {
-  errorHandlers, welcome, authors, books,
+  errorHandlers, uploadedFiles, welcome, books, users,
 } = require('./routes');
 
 const app = express();
@@ -13,13 +14,24 @@ const app = express();
 app.use(morgan('combined'));
 app.use(compression());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(fileUpload());
+
+app.use(uploadedFiles({
+  uploadDir: '/tmp',
+  routes: {
+    '/users': {
+      method: 'post',
+      fieldName: 'avatar',
+    },
+  },
+}));
 
 const swaggerDoc = YAML.load('conf/swagger.yaml');
 app.use('/v1/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
 app.use('/', welcome);
-app.use('/authors', authors);
 app.use('/books', books);
+app.use('/users', users);
 
 app.set('json spaces', app.get('env') === 'development' ? 2 : 0);
 

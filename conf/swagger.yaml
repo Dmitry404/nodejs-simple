@@ -10,6 +10,8 @@ schemes:
 tags:
 - name: "books"
   description: "REST endpoints related to 'books' collection"
+- name: "users"
+  description: "REST endpoints related to 'users' collection"
 - name: "default"
   description: "Anything which didn't get into one of the RESTs groups above"
 paths:
@@ -92,7 +94,6 @@ paths:
           type: array
           items: array
             type: integer
-
   '/books/{bookId}':
     get:
       description: "Returns book info, including its authors, based on a single ID"
@@ -181,7 +182,6 @@ paths:
           description: "ID of the book to remove"
           required: true
           type: integer
-
   '/books/{bookId}/reviews':
     get:
       description: "Returns posted user reviews, based on a single book ID"
@@ -322,6 +322,85 @@ paths:
           type: integer
           minimum: 1
           maximum: 5
+  '/users':
+    get:
+      description: "Returns all users"
+      tags:
+      - "users"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "users collection"
+    post:
+      description: "Adds a new user to collection"
+      tags:
+      - "users"
+      produces:
+      - "application/json"
+      responses:
+        201:
+          description: "The book which has been created"
+          schema:
+            $ref: "#/definitions/User"
+      parameters:
+        - name: "name"
+          in: "body"
+          description: "User's name"
+          required: true
+          type: string
+        - name: "email"
+          in: "body"
+          description: "Users's email"
+          required: true
+          type: string
+        - name: "password"
+          in: "body"
+          description: "User's password"
+          required: true
+          type: string
+        - name: "avatar"
+          in: "body"
+          description: "User's avatar"
+          required: true
+          type: string
+          format: byte
+  '/users/{userId}':
+    put:
+      description: "Updates user's info"
+      tags:
+      - "users"
+      produces:
+      - "application/json"
+      responses:
+        204:
+          description: "user has been updated"
+      parameters:
+        - name: "userId"
+          in: "path"
+          description: "ID of the user to update"
+          required: true
+          type: integer
+        - name: "name"
+          in: "body"
+          description: "User's name"
+          required: false
+          type: string
+    delete:
+      description: "Removes user based on a single ID"
+      tags:
+      - "users"
+      produces:
+      - "application/json"
+      responses:
+        204:
+          description: "user has been removed"
+      parameters:
+        - name: "userId"
+          in: "path"
+          description: "ID of the user to remove"
+          required: true
+          type: integer
 definitions:
   Book:
     type: "object"
@@ -383,5 +462,24 @@ definitions:
       userId:
         type: "integer"
       createdAt:
+        type: "string"
+        format: "date-time"
+  User:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      name:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+      avatar:
+        type: "string"
+      createdAt:
+        type: "string"
+        format: "date-time"
+      updatedAt:
         type: "string"
         format: "date-time"
