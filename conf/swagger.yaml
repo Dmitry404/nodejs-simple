@@ -401,6 +401,16 @@ paths:
           description: "ID of the user to remove"
           required: true
           type: integer
+  '/users/top-reviewers':
+    get:
+      description: "Returns top 10 book reviewers (users)"
+      tags:
+      - "users"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Top 10 book reviewers"
 definitions:
   Book:
     type: "object"

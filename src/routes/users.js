@@ -1,6 +1,7 @@
 const express = require('express');
+const Sequelize = require('sequelize');
 const {
-  User,
+  User, BookReview,
 } = require('../models');
 
 const users = express.Router();
@@ -60,5 +61,25 @@ users.delete('/:userId(\\d+)', (req, res, next) => {
     next(err);
   });
 });
+
+users.get('/top-reviewers', (req, res, next) => {
+  User.findAll({
+    include: [{
+      model: BookReview,
+      attributes: [],
+      duplicating: false,
+    }],
+    attributes: ['id', 'name', [Sequelize.fn('COUNT', Sequelize.col('book_reviews.id')), 'reviews_count']],
+    group: ['user.id', 'user.name'],
+    order: [
+      [Sequelize.fn('COUNT', Sequelize.col('book_reviews.id')), 'DESC'],
+    ],
+    limit: 10,
+  }).then((users) => {
+    res.send(users);
+  }).catch((err) => {
+    next(err);
+  });
+})
 
 module.exports = users;
