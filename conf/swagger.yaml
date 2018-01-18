@@ -12,6 +12,8 @@ tags:
   description: "REST endpoints related to 'books' collection"
 - name: "users"
   description: "REST endpoints related to 'users' collection"
+- name: "rates"
+  description: "REST endpoints related to books ratings"
 - name: "default"
   description: "Anything which didn't get into one of the RESTs groups above"
 paths:
@@ -411,6 +413,32 @@ paths:
       responses:
         200:
           description: "Top 10 book reviewers"
+  '/rates/{rateId}':
+    put:
+      description: "Updates book's rating"
+      tags:
+      - "rates"
+      produces:
+      - "application/json"
+      responses:
+        204:
+          description: "book rating has been updated"
+      parameters:
+        - name: "title"
+          in: "body"
+          description: "Book's title"
+          required: false
+          type: string
+        - name: "isbn"
+          in: "body"
+          description: "Book's ISBN"
+          required: false
+          type: string
+        - name: "edition"
+          in: "body"
+          description: "Books's edition"
+          required: false
+          type: string
 definitions:
   Book:
     type: "object"

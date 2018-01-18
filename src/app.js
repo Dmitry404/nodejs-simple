@@ -6,7 +6,7 @@ const fileUpload = require('express-fileupload');
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const {
-  errorHandlers, uploadedFiles, welcome, books, users,
+  errorHandlers, uploadedFiles, welcome, books, users, rates,
 } = require('./routes');
 
 const app = express();
@@ -32,6 +32,7 @@ app.use('/v1/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 app.use('/', welcome);
 app.use('/books', books);
 app.use('/users', users);
+app.use('/rates', rates);
 
 app.set('json spaces', app.get('env') === 'development' ? 2 : 0);
 
