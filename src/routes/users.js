@@ -75,11 +75,11 @@ users.get('/top-reviewers', (req, res, next) => {
       [Sequelize.fn('COUNT', Sequelize.col('book_reviews.id')), 'DESC'],
     ],
     limit: 10,
-  }).then((users) => {
-    res.send(users);
+  }).then((result) => {
+    res.send(result);
   }).catch((err) => {
     next(err);
   });
-})
+});
 
 module.exports = users;
