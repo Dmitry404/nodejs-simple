@@ -10,10 +10,16 @@ schemes:
 tags:
 - name: "books"
   description: "REST endpoints related to 'books' collection"
+- name: "book"
+  description: "REST endpoints related to book specified by ID"
 - name: "users"
   description: "REST endpoints related to 'users' collection"
 - name: "rates"
-  description: "REST endpoints related to books ratings"
+  description: "REST endpoints related to books' ratings"
+- name: "reviews"
+  description: "REST endpoints related to books' reviews"
+- name: "authors"
+  description: "REST endpoints related to books' authors"
 - name: "default"
   description: "Anything which didn't get into one of the RESTs groups above"
 paths:
@@ -100,7 +106,7 @@ paths:
     get:
       description: "Returns book info, including its authors, based on a single ID"
       tags:
-      - "books"
+      - "book"
       produces:
       - "application/json"
       responses:
@@ -115,7 +121,7 @@ paths:
     put:
       description: "Updates book's info"
       tags:
-      - "books"
+      - "book"
       produces:
       - "application/json"
       responses:
@@ -172,7 +178,7 @@ paths:
     delete:
       description: "Removes book based on a single ID"
       tags:
-      - "books"
+      - "book"
       produces:
       - "application/json"
       responses:
@@ -188,7 +194,7 @@ paths:
     get:
       description: "Returns posted user reviews, based on a single book ID"
       tags:
-      - "books"
+      - "reviews"
       produces:
       - "application/json"
       responses:
@@ -203,7 +209,7 @@ paths:
     post:
       description: "Returns posted user reviews, based on a single book ID"
       tags:
-      - "books"
+      - "reviews"
       produces:
       - "application/json"
       responses:
@@ -273,7 +279,7 @@ paths:
       post:
         description: "Returns user rates based on a single book ID"
         tags:
-        - "books"
+        - "rates"
         produces:
         - "application/json"
         responses:
@@ -439,6 +445,32 @@ paths:
           description: "Books's edition"
           required: false
           type: string
+  '/authors/by-book-rate/{from}-{to}':
+    get:
+      description: "Returns authors which have books rated within a range {from}-{to}"
+      tags:
+      - "authors"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "authors collection"
+      parameters:
+        - name: "from"
+          in: "path"
+          description: "min book rate to include into result"
+          required: true
+          type: integer
+          minimum: 1
+          maximum: 5
+        - name: "to"
+          in: "path"
+          description: "max book rate to include into result"
+          required: true
+          type: integer
+          minimum: 1
+          maximum: 5
+
 definitions:
   Book:
     type: "object"

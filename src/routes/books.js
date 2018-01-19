@@ -5,6 +5,7 @@ const {
 } = require('../models');
 
 const books = express.Router();
+const Op = Sequelize.Op;
 
 books.get('/', (req, res, next) => {
   Book.findAll({
@@ -35,88 +36,6 @@ books.post('/', (req, res, next) => {
   }).then((book) => {
     book.addAuthors(authors);
     res.status(201).json(book);
-  }).catch((err) => {
-    next(err);
-  });
-});
-
-books.put('/:bookId(\\d+)', (req, res, next) => {
-  const { bookId } = req.params;
-  const {
-    title, isbn, edition, published, description,
-    pages, publisher, authors,
-  } = req.body;
-
-  Book.update({
-    title, isbn, edition, published, description, pages, publisher,
-  }, {
-    where: { id: bookId },
-  }).then(() => {
-    if (Array.isArray(authors)) {
-      Book.findById(bookId, {
-        attributes: ['id'],
-      }).then((book) => {
-        book.setAuthors([]);
-        book.addAuthors(authors);
-      });
-    }
-    res.status(204).end();
-  }).catch((err) => {
-    next(err);
-  });
-});
-
-books.delete('/:bookId(\\d+)', (req, res, next) => {
-  const { bookId } = req.params;
-  Book.findById(bookId, {
-    attributes: ['id'],
-  }).then((book) => {
-    book.destroy();
-    res.status(204).end();
-  }).catch((err) => {
-    next(err);
-  });
-});
-
-books.delete('/:bookId(\\d+)', (req, res, next) => {
-  const { bookId } = req.params;
-  Book.findById(bookId, {
-    attributes: ['id'],
-  }).then((book) => {
-    book.destroy();
-    res.status(204).end();
-  }).catch((err) => {
-    next(err);
-  });
-});
-
-books.get('/:bookId/reviews', (req, res, next) => {
-  const { bookId } = req.params;
-  BookReview.findAll({
-    where: {
-      bookId,
-    },
-    attributes: ['comment', 'createdAt'],
-    include: [{
-      model: User,
-      attributes: ['name'],
-    }],
-  }).then((comments) => {
-    res.json(comments);
-  }).catch((err) => {
-    next(err);
-  });
-});
-
-books.post('/:bookId/reviews', (req, res, next) => {
-  const { bookId } = req.params;
-  const { comment, userId } = req.body;
-  BookReview.create({
-    comment,
-    bookId,
-    userId,
-  }).then((bookReview) => {
-    res.status(201).json(bookReview);
   }).catch((err) => {
     next(err);
   });
@@ -161,7 +80,7 @@ books.get('/by-author/:authorId(\\d+)', (req, res, next) => {
   });
 });
 
-books.get('/by-rate/:from(\\d+)-:to(\\d+)', (req, res, next) => {
+books.get('/by-rate/:from([1-5])-:to([1-5])', (req, res, next) => {
   const { from, to } = req.params;
   Book.findAll({
     include: [{
@@ -170,29 +89,14 @@ books.get('/by-rate/:from(\\d+)-:to(\\d+)', (req, res, next) => {
     }],
     attributes: ['id', 'title', [Sequelize.fn('AVG', Sequelize.col('book_rates.rate')), 'avg_rate']],
     group: ['book.id', 'book.title'],
-    having: Sequelize.where(Sequelize.fn('AVG', Sequelize.col('book_rates.rate')), {
-      $gte: parseInt(from, 10),
-      $lte: parseInt(to, 10),
+    having: Sequelize.where(Sequelize.fn('AVG', Sequelize.col('book_rates.rate')), { 
+      [Op.between]: [parseInt(from, 10), parseInt(to, 10)],
     }),
     order: [
       Sequelize.fn('AVG', Sequelize.col('book_rates.rate')),
     ],
   }).then((result) => {
     res.send(result);
-  }).catch((err) => {
-    next(err);
-  });
-});
-
-books.post('/:bookId/rates', (req, res, next) => {
-  const { bookId } = req.params;
-  const { rate, userId } = req.body;
-  BookRate.create({
-    rate,
-    bookId,
-    userId,
-  }).then((bookRate) => {
-    res.status(201).json(bookRate);
   }).catch((err) => {
     next(err);
   });

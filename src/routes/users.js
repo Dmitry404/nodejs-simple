@@ -76,7 +76,7 @@ users.get('/top-reviewers', (req, res, next) => {
     ],
     limit: 10,
   }).then((result) => {
-    res.send(result);
+    res.json(result);
   }).catch((err) => {
     next(err);
   });
