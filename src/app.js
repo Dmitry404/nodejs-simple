@@ -1,3 +1,4 @@
+const path = require('path');
 const compression = require('compression');
 const morgan = require('morgan');
 const express = require('express');
@@ -17,12 +18,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(fileUpload());
 
 app.use(uploadedFiles({
-  uploadDir: '/tmp',
+  uploadDir: path.resolve(__dirname, 'public', 'uploads'), 
   routes: {
     '/users': {
       method: 'post',
       fieldName: 'avatar',
     },
+    '/books/:bookId(\\d+)': {
+      method: 'put',
+      fieldName: 'cover',
+    }
   },
 }));
 

@@ -5,15 +5,16 @@ const {
 
 const book = express.Router({ mergeParams: true });
 
-book.put('/:bookId(\\d+)', (req, res, next) => {
+book.put('/', (req, res, next) => {
   const { bookId } = req.params;
+  const { cover } = req.uploaded;
   const {
     title, isbn, edition, published, description,
     pages, publisher, authors,
   } = req.body;
 
   Book.update({
-    title, isbn, edition, published, description, pages, publisher,
+    title, isbn, edition, published, description, pages, publisher, cover,
   }, {
     where: { id: bookId },
   }).then(() => {
@@ -31,7 +32,7 @@ book.put('/:bookId(\\d+)', (req, res, next) => {
   });
 });
 
-book.delete('/:bookId(\\d+)', (req, res, next) => {
+book.delete('/', (req, res, next) => {
   const { bookId } = req.params;
   Book.findById(bookId, {
     attributes: ['id'],
@@ -43,7 +44,7 @@ book.delete('/:bookId(\\d+)', (req, res, next) => {
   });
 });
 
-book.post('/:bookId(\\d+)/rates', (req, res, next) => {
+book.post('/rates', (req, res, next) => {
   const { bookId } = req.params;
   const { rate, userId } = req.body;
   BookRate.create({

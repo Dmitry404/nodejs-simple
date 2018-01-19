@@ -1,7 +1,9 @@
 const path = require('path');
+const uuid = require('node-uuid');
+const pathToRegexp = require('path-to-regexp');
 
 function routeMatches(req, route, acceptedMethod) {
-  return route === req.path && acceptedMethod.toLowerCase() === req.method.toLowerCase();
+  return pathToRegexp(route).test(req.path) && acceptedMethod.toLowerCase() === req.method.toLowerCase();
 }
 
 function fieldExists(req, fieldName) {
@@ -9,10 +11,12 @@ function fieldExists(req, fieldName) {
 }
 
 function moveFile(file, uploadDir, req, next) {
-  const filePath = path.resolve(uploadDir, file.name);
+  const fileName = `${uuid.v4()}-${file.name}`;
+  const filePath = path.resolve(uploadDir, fileName);
+
   file.mv(filePath)
     .then(() => {
-      req.uploaded[file.fieldName] = filePath;
+      req.uploaded[file.fieldName] = fileName;
       next();
     }).catch((err) => {
       next(err);
@@ -26,8 +30,9 @@ module.exports = (options) => {
     } else {
       const routes = options.routes || {};
       let routeMatchDetected = false;
+
       Object.keys(routes).forEach((route) => {
-        const routeOptions = routes[route]; // todo check options/fields existance
+        const routeOptions = routes[route];
         const { fieldName, method: acceptedMethod } = routeOptions;
 
         if (routeMatches(req, route, acceptedMethod)) {
