@@ -5,6 +5,17 @@ const {
 
 const book = express.Router({ mergeParams: true });
 
+book.get('/', (req, res, next) => {
+  const { bookId } = req.params;
+
+  Book.findById(bookId, {
+  }).then((result) => {
+    res.json(result);
+  }).catch((err) => {
+    next(err);
+  });
+});
+
 book.put('/', (req, res, next) => {
   const { bookId } = req.params;
   const { cover } = req.uploaded;

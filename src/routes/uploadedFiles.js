@@ -3,7 +3,8 @@ const uuid = require('node-uuid');
 const pathToRegexp = require('path-to-regexp');
 
 function routeMatches(req, route, acceptedMethod) {
-  return pathToRegexp(route).test(req.path) && acceptedMethod.toLowerCase() === req.method.toLowerCase();
+  return pathToRegexp(route).test(req.path)
+    && acceptedMethod.toLowerCase() === req.method.toLowerCase();
 }
 
 function fieldExists(req, fieldName) {

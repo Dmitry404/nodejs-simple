@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(fileUpload());
 
 app.use(uploadedFiles({
-  uploadDir: path.resolve(__dirname, 'public', 'uploads'), 
+  uploadDir: path.resolve(__dirname, 'public', 'uploads'),
   routes: {
     '/users': {
       method: 'post',
@@ -27,7 +27,7 @@ app.use(uploadedFiles({
     '/books/:bookId(\\d+)': {
       method: 'put',
       fieldName: 'cover',
-    }
+    },
   },
 }));
 
