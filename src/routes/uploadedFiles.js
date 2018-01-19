@@ -20,7 +20,7 @@ function moveFile(file, uploadDir, req, next) {
 }
 
 module.exports = (options) => {
-  return (req, res, next) => {
+  const uploadedFiles = (req, res, next) => {
     if (!options.uploadDir) {
       next(new Error('uploadDir property is missing'));
     } else {
@@ -41,10 +41,12 @@ module.exports = (options) => {
           req.uploaded = {};
           moveFile(file, options.uploadDir, req, next);
         }
+        return undefined;
       });
       if (!routeMatchDetected) {
         next();
       }
     }
   };
+  return uploadedFiles;
 };

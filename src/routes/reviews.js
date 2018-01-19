@@ -1,14 +1,12 @@
 const express = require('express');
-const Sequelize = require('sequelize');
 const {
-  Book, BookReview, User,
+  BookReview, User,
 } = require('../models');
 
 const reviews = express.Router({ mergeParams: true });
 
 reviews.get('/', (req, res, next) => {
   const { bookId } = req.params;
-  console.log(req.url);
   BookReview.findAll({
     where: {
       bookId,

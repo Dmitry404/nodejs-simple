@@ -5,7 +5,7 @@ const {
 } = require('../models');
 
 const authors = express.Router();
-const Op = Sequelize.Op;
+const { Op } = Sequelize;
 
 authors.get('/by-book-rate/:from([1-5])-:to([1-5])', (req, res, next) => {
   const { from, to } = req.params;
@@ -20,7 +20,7 @@ authors.get('/by-book-rate/:from([1-5])-:to([1-5])', (req, res, next) => {
     attributes: ['books->book_rates.rate', [Sequelize.fn('AVG', Sequelize.col('books->book_rates.rate')), 'avg_rate']],
     group: ['title'],
     having: Sequelize.where(Sequelize.fn('AVG', Sequelize.col('books->book_rates.rate')), {
-      [Op.between]: [ parseInt(from, 10), parseInt(to, 10)]
+      [Op.between]: [parseInt(from, 10), parseInt(to, 10)],
     }),
     order: [[
       Sequelize.fn('AVG', Sequelize.col('books->book_rates.rate')),
