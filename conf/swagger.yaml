@@ -1,8 +1,8 @@
 swagger: "2.0"
 info:
-  title: "Node.js course : Phase 3 : Swagger"
+  title: "Node.js course : Phase 4 : Swagger"
   description: "A bit more complicated sample project"
-  version: "0.3.0"
+  version: "0.4.0"
 host: "localhost:3000"
 basePath: "/"
 schemes:
