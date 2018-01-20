@@ -16,7 +16,7 @@
     "start": "npm run db:start && nodemon --config conf/nodemon.json src/server.js",
     "test": "",
     "eslint": "eslint -c conf/eslintrc.json --ignore-path conf/eslintignore src/**",
-    "db:start": "docker start $npm_package_config_docker_container",
+    "db:start": "docker start $npm_package_config_docker_container && sequelize db:migrate",
     "db:stop": "docker stop $npm_package_config_docker_container",
     "prepush": "npm test",
     "precommit": "npm run eslint",
@@ -36,12 +36,16 @@
     "body-parser": "^1.18.2",
     "compression": "^1.7.1",
     "express": "^4.16.2",
+    "express-fileupload": "^0.3.0",
     "lodash": "^4.17.4",
     "moment": "^2.19.3",
     "morgan": "^1.9.0",
     "mysql2": "^1.5.1",
+    "node-uuid": "^1.4.8",
+    "path-to-regexp": "^2.1.0",
     "sequelize": "^4.29.0",
     "swagger-ui-express": "^2.0.13",
-    "winston": "^2.4.0"
+    "winston": "^2.4.0",
+    "yamljs": "^0.3.0"
   }
 }

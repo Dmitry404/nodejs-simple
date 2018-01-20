@@ -1,0 +1,555 @@
+swagger: "2.0"
+info:
+  title: "Node.js course : Phase 3 : Swagger"
+  description: "A bit more complicated sample project"
+  version: "0.3.0"
+host: "localhost:3000"
+basePath: "/"
+schemes:
+- "http"
+tags:
+- name: "books"
+  description: "REST endpoints related to 'books' collection"
+- name: "book"
+  description: "REST endpoints related to book specified by ID"
+- name: "users"
+  description: "REST endpoints related to 'users' collection"
+- name: "rates"
+  description: "REST endpoints related to books' ratings"
+- name: "reviews"
+  description: "REST endpoints related to books' reviews"
+- name: "authors"
+  description: "REST endpoints related to books' authors"
+- name: "default"
+  description: "Anything which didn't get into one of the RESTs groups above"
+paths:
+  '/api/v1/readme':
+    get:
+      description: "Welcomes user. That's all. Nothing more.."
+      produces:
+      - "text/markdown"
+      responses:
+        200:
+          description: "I'm fine"
+        304:
+          description: "I'm still fine"
+  '/books':
+    get:
+      description: "Returns all books including Authors and book's rate"
+      tags:
+      - "books"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "books collection"
+    post:
+      description: "Adds a new book to collection"
+      tags:
+      - "books"
+      produces:
+      - "application/json"
+      responses:
+        201:
+          description: "The book which has been created"
+          schema:
+            $ref: "#/definitions/Book"
+      parameters:
+        - name: "title"
+          in: "body"
+          description: "Book's title"
+          required: false
+          type: string
+        - name: "isbn"
+          in: "body"
+          description: "Book's ISBN"
+          required: false
+          type: string
+        - name: "edition"
+          in: "body"
+          description: "Books's edition"
+          required: false
+          type: string
+        - name: "published"
+          in: "body"
+          description: "Book's published year"
+          required: false
+          type: integer
+        - name: "description"
+          in: "body"
+          description: "Book's description"
+          required: false
+          type: string
+        - name: "language"
+          in: "body"
+          description: "Language that the book is written on"
+          required: false
+          type: string
+        - name: "pages"
+          in: "body"
+          description: "Number of pages in the book"
+          required: false
+          type: integer
+        - name: "publisher"
+          in: "body"
+          description: "Book's publisher"
+          required: false
+          type: string
+        - name: "authors"
+          in: "body"
+          description: "Array of Book's authors IDs"
+          required: true
+          type: array
+          items: array
+            type: integer
+  '/books/{bookId}':
+    get:
+      description: "Returns book info, including its authors, based on a single ID"
+      tags:
+      - "book"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "book information"
+      parameters:
+        - name: "bookId"
+          in: "path"
+          description: "ID of the book to fetch"
+          required: true
+          type: integer
+    put:
+      description: "Updates book's info"
+      tags:
+      - "book"
+      produces:
+      - "application/json"
+      responses:
+        204:
+          description: "book has been updated"
+      parameters:
+        - name: "title"
+          in: "body"
+          description: "Book's title"
+          required: false
+          type: string
+        - name: "isbn"
+          in: "body"
+          description: "Book's ISBN"
+          required: false
+          type: string
+        - name: "edition"
+          in: "body"
+          description: "Books's edition"
+          required: false
+          type: string
+        - name: "published"
+          in: "body"
+          description: "Book's published year"
+          required: false
+          type: integer
+        - name: "description"
+          in: "body"
+          description: "Book's description"
+          required: false
+          type: string
+        - name: "language"
+          in: "body"
+          description: "Language that the book is written on"
+          required: false
+          type: string
+        - name: "pages"
+          in: "body"
+          description: "Number of pages in the book"
+          required: false
+          type: integer
+        - name: "publisher"
+          in: "body"
+          description: "Book's publisher"
+          required: false
+          type: string
+        - name: "authors"
+          in: "body"
+          description: "Array of Book's authors IDs"
+          required: false
+          type: array
+          items: array
+            type: integer
+    delete:
+      description: "Removes book based on a single ID"
+      tags:
+      - "book"
+      produces:
+      - "application/json"
+      responses:
+        204:
+          description: "book has been removed"
+      parameters:
+        - name: "bookId"
+          in: "path"
+          description: "ID of the book to remove"
+          required: true
+          type: integer
+  '/books/{bookId}/reviews':
+    get:
+      description: "Returns posted user reviews, based on a single book ID"
+      tags:
+      - "reviews"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "user reviews"
+      parameters:
+        - name: "bookId"
+          in: "path"
+          description: "ID of the book to fetch user reviews to"
+          required: true
+          type: integer
+    post:
+      description: "Returns posted user reviews, based on a single book ID"
+      tags:
+      - "reviews"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "user review which has been posted"
+          schema:
+            $ref: "#/definitions/BookReview"
+      parameters:
+        - name: "bookId"
+          in: "path"
+          description: "ID of the book to post review"
+          required: true
+          type: integer
+        - name: "userId"
+          in: "body"
+          description: "ID of the user who posts review"
+          required: true
+          type: integer
+        - name: "comment"
+          in: "body"
+          description: "Book review comment"
+          required: true
+          type: string
+  '/books/most-reviewed':
+    get:
+      description: "Returns top 5 books which have most user reviews"
+      tags:
+      - "books"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "books collection"
+  '/books/most-reviewed/{limit}':
+    get:
+      description: "Returns books which have most user reviews"
+      tags:
+      - "books"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "books collection"
+      parameters:
+        - name: "limit"
+          in: "path"
+          description: "maximum number of results to return"
+          required: true
+          type: integer
+  '/books/by-author/{authorId}':
+    get:
+      description: "Returns books which have at least one of the authors based on a single ID"
+      tags:
+      - "books"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "books collection"
+      parameters:
+        - name: "authorId"
+          in: "path"
+          description: "author ID"
+          required: true
+          type: integer
+  '/books/{bookId}/rates':
+      post:
+        description: "Returns user rates based on a single book ID"
+        tags:
+        - "rates"
+        produces:
+        - "application/json"
+        responses:
+          200:
+            description: "user rate which has been posted"
+            schema:
+              $ref: "#/definitions/BookRate"
+        parameters:
+          - name: "bookId"
+            in: "path"
+            description: "ID of the book to rate"
+            required: true
+            type: integer
+          - name: "userId"
+            in: "body"
+            description: "ID of the user who rates book"
+            required: true
+            type: integer
+          - name: "rate"
+            in: "body"
+            description: "Rate value"
+            required: true
+            type: integer
+            minimum: 1
+            maximum: 5
+  '/books/by-rate/{from}-{to}':
+    get:
+      description: "Returns books which have rate based on a range {from}-{to}"
+      tags:
+      - "books"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "books collection"
+      parameters:
+        - name: "from"
+          in: "path"
+          description: "min book rate to include into result"
+          required: true
+          type: integer
+          minimum: 1
+          maximum: 5
+        - name: "to"
+          in: "path"
+          description: "max book rate to include into result"
+          required: true
+          type: integer
+          minimum: 1
+          maximum: 5
+  '/users':
+    get:
+      description: "Returns all users"
+      tags:
+      - "users"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "users collection"
+    post:
+      description: "Adds a new user to collection"
+      tags:
+      - "users"
+      produces:
+      - "application/json"
+      responses:
+        201:
+          description: "The book which has been created"
+          schema:
+            $ref: "#/definitions/User"
+      parameters:
+        - name: "name"
+          in: "body"
+          description: "User's name"
+          required: true
+          type: string
+        - name: "email"
+          in: "body"
+          description: "Users's email"
+          required: true
+          type: string
+        - name: "password"
+          in: "body"
+          description: "User's password"
+          required: true
+          type: string
+        - name: "avatar"
+          in: "body"
+          description: "User's avatar"
+          required: true
+          type: string
+          format: byte
+  '/users/{userId}':
+    put:
+      description: "Updates user's info"
+      tags:
+      - "users"
+      produces:
+      - "application/json"
+      responses:
+        204:
+          description: "user has been updated"
+      parameters:
+        - name: "userId"
+          in: "path"
+          description: "ID of the user to update"
+          required: true
+          type: integer
+        - name: "name"
+          in: "body"
+          description: "User's name"
+          required: false
+          type: string
+    delete:
+      description: "Removes user based on a single ID"
+      tags:
+      - "users"
+      produces:
+      - "application/json"
+      responses:
+        204:
+          description: "user has been removed"
+      parameters:
+        - name: "userId"
+          in: "path"
+          description: "ID of the user to remove"
+          required: true
+          type: integer
+  '/users/top-reviewers':
+    get:
+      description: "Returns top 10 book reviewers (users)"
+      tags:
+      - "users"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Top 10 book reviewers"
+  '/rates/{rateId}':
+    put:
+      description: "Updates book's rating"
+      tags:
+      - "rates"
+      produces:
+      - "application/json"
+      responses:
+        204:
+          description: "book rating has been updated"
+      parameters:
+        - name: "title"
+          in: "body"
+          description: "Book's title"
+          required: false
+          type: string
+        - name: "isbn"
+          in: "body"
+          description: "Book's ISBN"
+          required: false
+          type: string
+        - name: "edition"
+          in: "body"
+          description: "Books's edition"
+          required: false
+          type: string
+  '/authors/by-book-rate/{from}-{to}':
+    get:
+      description: "Returns authors which have books rated within a range {from}-{to}"
+      tags:
+      - "authors"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "authors collection"
+      parameters:
+        - name: "from"
+          in: "path"
+          description: "min book rate to include into result"
+          required: true
+          type: integer
+          minimum: 1
+          maximum: 5
+        - name: "to"
+          in: "path"
+          description: "max book rate to include into result"
+          required: true
+          type: integer
+          minimum: 1
+          maximum: 5
+
+definitions:
+  Book:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      title:
+        type: "string"
+      isbn:
+        type: "string"
+      edition:
+        type: "string"
+      published:
+        type: "string"
+      description:
+        type: "string"
+      language:
+        type: "string"
+      pages:
+        type: "integer"
+      publisher:
+        type: "string"
+      cover:
+        type: "string"
+      createdAt:
+        type: "string"
+        format: "date-time"
+      updatedAt:
+        type: "string"
+        format: "date-time"
+  BookReview:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      comment:
+        type: "string"
+      bookId:
+        type: "integer"
+      userId:
+        type: "integer"
+      createdAt:
+        type: "string"
+        format: "date-time"
+      updatedAt:
+        type: "string"
+        format: "date-time"
+  BookRate:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      rate:
+        type: "integer"
+        minimum: 1
+        maximum: 5
+      bookId:
+        type: "integer"
+      userId:
+        type: "integer"
+      createdAt:
+        type: "string"
+        format: "date-time"
+  User:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      name:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+      avatar:
+        type: "string"
+      createdAt:
+        type: "string"
+        format: "date-time"
+      updatedAt:
+        type: "string"
+        format: "date-time"
