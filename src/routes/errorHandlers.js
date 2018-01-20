@@ -5,7 +5,7 @@ module.exports = {
   pageNotFound: (req, res) => {
     res.status(404).sendFile(path.resolve(__dirname, '..', 'public', '404.png'));
   },
-  serverError: (err, req, res) => {
+  serverError: (err, req, res, next) => { // eslint-disable-line no-unused-vars
     winston.error(err);
     const statusCode = err.code || 500;
     const env = process.env.NODE_ENV || 'development';
