@@ -10,13 +10,12 @@ const conf = {
     docker: {
         image: process.env.npm_package_config_docker_image,
         container: process.env.npm_package_config_docker_container,
-        exposeDbPortOn: process.env.npm_package_config_docker_port,
+        exposeDbPortOn: process.env.npm_package_config_docker_exposePort,
     },
     db: {
-        port: dbConf[env]['port'],
         database: dbConf[env]['database'],
         username: dbConf[env]['username'],
-        password: dbConf[env]['database'],
+        password: dbConf[env]['password'],
     }
 };
 
@@ -26,7 +25,7 @@ fs.copyFileSync(secretFileTemplate, secretFile);
 
 const result = spawnSync('docker', [
     'run', 
-    '-p', `${conf.docker.exposeDbPortOn}:${conf.db.port}`, 
+    '-p', `${conf.docker.exposeDbPortOn}:3306`, 
     `--name=${conf.docker.container}`,
     '-e', `MYSQL_DATABASE=${conf.db.database}`,
     '-e', `MYSQL_USER=${conf.db.username}`,
