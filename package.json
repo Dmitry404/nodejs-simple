@@ -24,7 +24,11 @@
     "db:populate": "sequelize db:seed:all",
     "prepush": "npm test",
     "precommit": "npm run eslint",
+<<<<<<< HEAD
     "postinstall": "scripts/postinstall.js",
+=======
+    "postinstall": "scripts/postinstall.js", 
+>>>>>>> Moving postinstallation step to script / modified installation procedure
     "uninstall": "npm run db:stop || true && docker rm $npm_package_config_docker_container"
   },
   "devDependencies": {

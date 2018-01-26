@@ -2,7 +2,11 @@
     "development": {
         "dialect": "mysql",
         "host": "127.0.0.1",
+<<<<<<< HEAD
         "port": 3360,
+=======
+        "port": 3306,
+>>>>>>> Moving postinstallation step to script / modified installation procedure
         "username": "librarian",
         "password": "secret",
         "database": "bookshelf"
