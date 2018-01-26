@@ -18,7 +18,7 @@
   "scripts": {
     "start": "npm run db:start && nodemon --config conf/nodemon.json src/server.js",
     "test": "",
-    "eslint": "eslint -c conf/eslintrc.json --ignore-path conf/eslintignore src/**",
+    "eslint": "eslint -c conf/eslintrc.json --ignore-path conf/eslintignore src/** scripts/**",
     "db:start": "docker start $npm_package_config_docker_container && sleep 5 && sequelize db:migrate",
     "db:stop": "docker stop $npm_package_config_docker_container",
     "prepush": "npm test",
