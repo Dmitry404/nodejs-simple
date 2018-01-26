@@ -6,6 +6,9 @@
   "license": "0BSD",
   "repository": "https://github.com/Dmitry404/nodejs-simple",
   "config": {
+    "server": {
+      "port": 3000
+    },
     "docker": {
       "image": "mysql:5.5",
       "container": "nodejs-bookshelf-db",
@@ -20,7 +23,7 @@
     "db:stop": "docker stop $npm_package_config_docker_container",
     "prepush": "npm test",
     "precommit": "npm run eslint",
-    "postinstall": "docker run -p $npm_package_config_docker_port:3306 --name=$npm_package_config_docker_container -e MYSQL_ROOT_PASSWORD=secret -e MYSQL_DATABASE=bookshelf -d $npm_package_config_docker_image && docker stop $npm_package_config_docker_container",
+    "postinstall": "scripts/postinstall.js", 
     "uninstall": "npm run db:stop || true && docker rm $npm_package_config_docker_container"
   },
   "devDependencies": {

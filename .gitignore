@@ -1,2 +1,3 @@
-node_modules/
-src/public/uploads
+/node_modules/
+/src/public/uploads
+/conf/secret.json
