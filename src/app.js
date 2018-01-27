@@ -24,6 +24,7 @@ app.use(fileUpload());
 passport.use(appAuth.jwtStrategy);
 passport.initialize();
 app.use(passport.authenticate('jwt', { session: false }));
+app.use(appAuth.authorizeUser());
 
 app.use(uploadedFiles({
   uploadDir: path.resolve(__dirname, 'public', 'uploads'),
@@ -42,7 +43,7 @@ app.use(uploadedFiles({
 const swaggerDoc = YAML.load('conf/swagger.yaml');
 app.use('/v1/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
-app.use('/', welcome);
+app.get('/', welcome);
 app.use('/books', books);
 app.use('/books/:bookId(\\d+)', book);
 app.use('/books/:bookId(\\d+)/reviews', reviews);

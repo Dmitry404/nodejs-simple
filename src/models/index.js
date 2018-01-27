@@ -12,6 +12,8 @@ const Author = require('./author')(sequelize);
 const BookReview = require('./book_review')(sequelize);
 const BookRate = require('./book_rate')(sequelize);
 const User = require('./user')(sequelize);
+const Role = require('./role')(sequelize);
+const RolePermission = require('./role_permissions')(sequelize);
 
 sequelize.define('authors_books', {}, {
   updatedAt: false,
@@ -27,6 +29,8 @@ BookReview.belongsTo(User);
 Book.hasMany(BookRate);
 User.hasMany(BookRate);
 
+RolePermission.belongsTo(Role);
+
 module.exports = {
-  Book, Author, BookReview, BookRate, User,
+  Book, Author, BookReview, BookRate, User, Role, RolePermission,
 };
