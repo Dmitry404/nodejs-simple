@@ -21,6 +21,7 @@
     "eslint": "eslint -c conf/eslintrc.json --ignore-path conf/eslintignore src/** scripts/**",
     "db:start": "docker start $npm_package_config_docker_container && sleep 5 && sequelize db:migrate",
     "db:stop": "docker stop $npm_package_config_docker_container",
+    "db:populate": "sequelize db:seed:all",
     "prepush": "npm test",
     "precommit": "npm run eslint",
     "postinstall": "scripts/postinstall.js",
