@@ -69,3 +69,4 @@ const authorizeUser = () => {
 module.exports = {
   jwtStrategy, authorizeUser,
 };
+
