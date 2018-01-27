@@ -4,10 +4,11 @@ const morgan = require('morgan');
 const express = require('express');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
+const passport = require('passport');
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const {
-  errorHandlers, uploadedFiles,
+  errorHandlers, uploadedFiles, appAuth,
 } = require('./middlewares');
 const {
   welcome, books, users, rates, authors, reviews, book,
@@ -19,6 +20,10 @@ app.use(morgan('combined'));
 app.use(compression());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(fileUpload());
+
+passport.use(appAuth.jwtStrategy);
+passport.initialize();
+app.use(passport.authenticate('jwt', { session: false }));
 
 app.use(uploadedFiles({
   uploadDir: path.resolve(__dirname, 'public', 'uploads'),
