@@ -7,7 +7,10 @@ const fileUpload = require('express-fileupload');
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const {
-  errorHandlers, uploadedFiles, welcome, books, users, rates, authors, reviews, book,
+  errorHandlers, uploadedFiles,
+} = require('./middlewares');
+const {
+  welcome, books, users, rates, authors, reviews, book,
 } = require('./routes');
 
 const app = express();
