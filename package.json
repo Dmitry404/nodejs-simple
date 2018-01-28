@@ -1,26 +1,30 @@
 {
-  "name": "nodejs-course-phase3",
-  "version": "0.3.0",
-  "description": "A bit more complicated sample project - phase 3",
+  "name": "nodejs-course",
+  "version": "0.4.0",
+  "description": "A bit more complicated sample project - phase 4",
   "author": "Dmitriy Butakov <dbutakov@lohika.com>",
   "license": "0BSD",
   "repository": "https://github.com/Dmitry404/nodejs-simple",
   "config": {
+    "server": {
+      "port": 3000
+    },
     "docker": {
       "image": "mysql:5.5",
       "container": "nodejs-bookshelf-db",
-      "port": 3360
+      "exposePort": 3360
     }
   },
   "scripts": {
     "start": "npm run db:start && nodemon --config conf/nodemon.json src/server.js",
     "test": "",
-    "eslint": "eslint -c conf/eslintrc.json --ignore-path conf/eslintignore src/**",
-    "db:start": "docker start $npm_package_config_docker_container && sequelize db:migrate",
+    "eslint": "eslint -c conf/eslintrc.json --ignore-path conf/eslintignore src/** scripts/**",
+    "db:start": "docker start $npm_package_config_docker_container && sleep 5 && sequelize db:migrate",
     "db:stop": "docker stop $npm_package_config_docker_container",
+    "db:populate": "sequelize db:seed:all",
     "prepush": "npm test",
     "precommit": "npm run eslint",
-    "postinstall": "docker run -p $npm_package_config_docker_port:3306 --name=$npm_package_config_docker_container -e MYSQL_ROOT_PASSWORD=secret -e MYSQL_DATABASE=bookshelf -d $npm_package_config_docker_image && docker stop $npm_package_config_docker_container",
+    "postinstall": "scripts/postinstall.js",
     "uninstall": "npm run db:stop || true && docker rm $npm_package_config_docker_container"
   },
   "devDependencies": {
@@ -42,6 +46,8 @@
     "morgan": "^1.9.0",
     "mysql2": "^1.5.1",
     "node-uuid": "^1.4.8",
+    "passport": "^0.4.0",
+    "passport-jwt": "^3.0.1",
     "path-to-regexp": "^2.1.0",
     "sequelize": "^4.29.0",
     "swagger-ui-express": "^2.0.13",
