@@ -37,10 +37,12 @@
     "sequelize-cli": "^3.2.0"
   },
   "dependencies": {
+    "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "compression": "^1.7.1",
     "express": "^4.16.2",
     "express-fileupload": "^0.3.0",
+    "jsonwebtoken": "^8.1.1",
     "lodash": "^4.17.4",
     "moment": "^2.19.3",
     "morgan": "^1.9.0",
