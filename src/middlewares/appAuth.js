@@ -43,24 +43,34 @@ function verifyRouteMatch(currentRoute, currentMethod, rolePermissions) {
   return matched;
 }
 
+function isAnonymousAllowed(user) {
+  return user === 'anonymous';
+}
+
+function isUserAuthorized(user, currentPath, currentMethod) {
+  const { roleId } = user.dataValues;
+  RolePermission.findAll({
+    attributes: ['route', 'method'],
+    where: {
+      roleId,
+    },
+  }).then(permissions => verifyRouteMatch(currentPath, currentMethod, permissions))
+    .catch((err) => {
+      winston.error(err);
+    });
+  return false;
+}
+
 const authorizeUser = () => {
   const authorize = (req, res, next) => {
     if (req.user) {
-      const { roleId } = req.user.dataValues;
-      RolePermission.findAll({
-        attributes: ['route', 'method'],
-        where: {
-          roleId,
-        },
-      }).then((permissions) => {
-        if (verifyRouteMatch(req.path, req.method, permissions)) {
-          next();
-        } else {
-          res.status(401).send('Unauthorized');
-        }
-      });
+      if (isAnonymousAllowed(req.user) || isUserAuthorized(req.user, req.path, req.method)) {
+        next();
+      } else {
+        res.status(401).send('Unauthorized');
+      }
     } else {
-      next(new Error('Unauthenticated'));
+      res.status(401).send('Unauthenticated');
     }
   };
   return authorize;
