@@ -28,7 +28,7 @@ const publicRoutes = {
   '/': 'GET',
   '/favicon.ico': 'GET',
   '/api/v1/readme': 'GET',
-  '/users/sign-in': 'GET',
+  '/users/sign-in': 'POST',
   '/users/sign-up': 'POST',
 };
 passport.use(new PassportAnonymous(publicRoutes));
@@ -53,11 +53,11 @@ app.use(uploadedFiles({
 
 app.get('/', welcome);
 app.get('/api/v1/readme', welcome);
+
 app.use('/books', books);
 app.use('/books/:bookId(\\d+)', book);
 app.use('/books/:bookId(\\d+)/reviews', reviews);
-app.use('/users', users);
-app.use('/users/sign-[in|out|up]', accounts);
+app.use('/users', users, accounts);
 app.use('/rates', rates);
 app.use('/authors', authors);
 

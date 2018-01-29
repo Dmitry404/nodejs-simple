@@ -11,6 +11,7 @@ module.exports = (sequelize) => {
     name: Sequelize.STRING,
     password: Sequelize.STRING,
     avatar: Sequelize.STRING,
+    roleId: Sequelize.INTEGER,
   }, {
     indexes: [{
       unique: true,
