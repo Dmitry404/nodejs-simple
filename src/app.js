@@ -4,10 +4,14 @@ const morgan = require('morgan');
 const express = require('express');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
+const passport = require('passport');
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const {
-  errorHandlers, uploadedFiles, welcome, books, users, rates, authors, reviews, book,
+  errorHandlers, uploadedFiles, appAuth,
+} = require('./middlewares');
+const {
+  welcome, books, users, rates, authors, reviews, book,
 } = require('./routes');
 
 const app = express();
@@ -16,6 +20,14 @@ app.use(morgan('combined'));
 app.use(compression());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(fileUpload());
+
+const swaggerDoc = YAML.load('conf/swagger.yaml');
+app.use('/v1/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
+
+passport.use(appAuth.jwtStrategy);
+passport.initialize();
+app.use(passport.authenticate('jwt', { session: false }));
+app.use(appAuth.authorizeUser());
 
 app.use(uploadedFiles({
   uploadDir: path.resolve(__dirname, 'public', 'uploads'),
@@ -31,10 +43,7 @@ app.use(uploadedFiles({
   },
 }));
 
-const swaggerDoc = YAML.load('conf/swagger.yaml');
-app.use('/v1/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
-
-app.use('/', welcome);
+app.get('/', welcome);
 app.use('/books', books);
 app.use('/books/:bookId(\\d+)', book);
 app.use('/books/:bookId(\\d+)/reviews', reviews);

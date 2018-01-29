@@ -3,7 +3,7 @@
         "dialect": "mysql",
         "host": "127.0.0.1",
         "port": 3360,
-        "username": "root",
+        "username": "librarian",
         "password": "secret",
         "database": "bookshelf"
     }
