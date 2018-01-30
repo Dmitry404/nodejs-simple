@@ -1,6 +1,7 @@
 const winston = require('winston');
 const pathToRegexp = require('path-to-regexp');
 const { Strategy, ExtractJwt } = require('passport-jwt');
+const jwt = require('jsonwebtoken');
 const conf = require('../../conf/secret.json');
 const { User, RolePermission } = require('../models');
 
@@ -43,29 +44,47 @@ function verifyRouteMatch(currentRoute, currentMethod, rolePermissions) {
   return matched;
 }
 
+function isAnonymousAllowed(user) {
+  return user === 'anonymous';
+}
+
+function getRolePermissions(user) {
+  const { roleId } = user.dataValues;
+  return RolePermission.findAll({
+    attributes: ['route', 'method'],
+    where: {
+      roleId,
+    },
+  });
+}
+
 const authorizeUser = () => {
   const authorize = (req, res, next) => {
-    if (req.user) {
-      const { roleId } = req.user.dataValues;
-      RolePermission.findAll({
-        attributes: ['route', 'method'],
-        where: {
-          roleId,
-        },
-      }).then((permissions) => {
-        if (verifyRouteMatch(req.path, req.method, permissions)) {
-          next();
-        } else {
+    if (req.user && isAnonymousAllowed(req.user)) {
+      next();
+    } else if (req.user) {
+      getRolePermissions(req.user)
+        .then((permissions) => {
+          if (verifyRouteMatch(req.path, req.method, permissions)) {
+            next();
+          } else {
+            res.status(401).send('Unauthorized');
+          }
+        })
+        .catch((err) => {
+          winston.error(err);
           res.status(401).send('Unauthorized');
-        }
-      });
+        });
     } else {
-      next(new Error('Unauthenticated'));
+      res.status(401).send('Unauthenticated');
     }
   };
   return authorize;
 };
 
+const generateToken = payload => jwt.sign(payload, getSecret());
+
 module.exports = {
-  jwtStrategy, authorizeUser,
+  jwtStrategy, authorizeUser, generateToken,
 };
+
