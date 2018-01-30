@@ -17,7 +17,7 @@
   },
   "scripts": {
     "start": "npm run db:start && nodemon --config conf/nodemon.json src/server.js",
-    "test": "",
+    "test": "ava",
     "eslint": "eslint -c conf/eslintrc.json --ignore-path conf/eslintignore src/** scripts/**",
     "db:start": "docker start $npm_package_config_docker_container && sleep 5 && sequelize db:migrate",
     "db:stop": "docker stop $npm_package_config_docker_container",
@@ -34,7 +34,8 @@
     "eslint-plugin-import": "^2.8.0",
     "husky": "^0.14.3",
     "nodemon": "^1.12.5",
-    "sequelize-cli": "^3.2.0"
+    "sequelize-cli": "^3.2.0",
+    "supertest": "^3.0.0"
   },
   "dependencies": {
     "bcrypt": "^1.0.3",
