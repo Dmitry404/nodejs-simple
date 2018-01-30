@@ -13,7 +13,7 @@ test.before(async t => {
     t.not(res.text, '');
 
     jwt = res.text;
-});
+}); 
 
 test('book:add-then-check-response', async t => {
     const res = await request(app)
@@ -67,6 +67,17 @@ test('book:add-then-get-check-it-is-same-book', async t => {
     t.is(book.pages, 42);
     t.is(book.publisher, 'self-published');
 });
+
+test('book:update', async t => {
+    const res = await request(app)
+      .put('/books/220')
+      .set('Authorization', `Bearer ${jwt}`)
+      .set('Content-Type', 'multipart/form-data')
+      .field('title', 'test book (updated)')
+      .attach('cover', 'test/fixtures/nopic.png');
+  
+    t.is(res.status, 204);
+  });
 
 test('book:add-then-delete-check-response', async t => {
     const res = await request(app)
