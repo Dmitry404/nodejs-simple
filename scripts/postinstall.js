@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const dbConf = require('../conf/db.json');
+const dbConf = require('../conf/db');
 const winston = require('winston');
 const fs = require('fs');
 const path = require('path');
