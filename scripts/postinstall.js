@@ -30,7 +30,7 @@ const result = spawnSync('docker', [
   '-e', `MYSQL_DATABASE=${conf.db.database}`,
   '-e', `MYSQL_USER=${conf.db.username}`,
   '-e', `MYSQL_PASSWORD=${conf.db.password}`,
-  '-e', 'MYSQL_RANDOM_ROOT_PASSWORD=yes',
+  '-e', 'MYSQL_ROOT_PASSWORD=$eCReT',
   '-d', conf.docker.image,
 ]);
 

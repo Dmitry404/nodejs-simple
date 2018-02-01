@@ -12,6 +12,12 @@ npm install
 npm run start:dev
 ```
 
+- run tests
+
+```sh
+npm test
+```
+
 - uninstall (remove docker containers)
 
 ```
