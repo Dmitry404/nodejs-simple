@@ -41,7 +41,7 @@ if (result.status === 0) {
     'stop', conf.docker.container,
   ]);
 
-  winston.info('You can run the application now with "npm start"');
+  winston.info('You can run the application now with "npm run start:dev or npm run start:prod"');
 } else {
   winston.error(`Something weird has happened. Would you be kind to have a look? [${result.stderr.toString()}]`);
 }

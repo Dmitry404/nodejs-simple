@@ -4,7 +4,8 @@ const path = require('path');
 const welcome = express.Router();
 
 welcome.get('/', (req, res) => {
-  res.send('<h2>Hello Worm</h2> Go to <a href="http://localhost:3000/api/v1/readme">http://localhost:3000/api/v1/readme</a> to get started');
+  const { host } = req.headers.host;
+  res.send(`<h2>Hello Worm</h2> Go to <a href="http://${host}/api/v1/readme">http://${host}/api/v1/readme</a> to get started`);
 });
 
 welcome.get('/api/v1/readme', (req, res) => {

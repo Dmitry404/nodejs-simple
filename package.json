@@ -16,8 +16,9 @@
     }
   },
   "scripts": {
-    "start": "nodemon --config conf/nodemon.json src/server.js",
-    "start:dev": "npm run db:start && npm run db:populate || true && npm start",
+    "start": "node src/server.js",
+    "start:dev": "npm run db:start && npm run db:populate || true && nodemon --config conf/nodemon.json src/server.js",
+    "start:prod": "docker-compose up --build && npm run db:migrate && npm run db:populate || true && npm start",
     "test": "npm run test:prepare-test-db && ava",
     "eslint": "eslint -c conf/eslintrc.json --ignore-path conf/eslintignore src/** scripts/**",
     "db:start": "docker start $npm_package_config_docker_container && sleep 5 && npm run db:migrate",
