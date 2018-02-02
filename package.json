@@ -17,7 +17,7 @@
   },
   "scripts": {
     "start": "npm run db:migrate && npm run db:populate || true && node src/server.js",
-    "start:dev": "nodemon --config conf/nodemon.json src/server.js",
+    "start:dev": "npm run db:start && npm run db:migrate && npm run db:populate || true && nodemon --config conf/nodemon.json src/server.js",
     "start:prod": "docker-compose up --build --scale nodejs-bookshelf-app-prod=2",
     "test": "npm run test:prepare-test-db && ava",
     "eslint": "eslint -c conf/eslintrc.json --ignore-path conf/eslintignore src/** scripts/**",
