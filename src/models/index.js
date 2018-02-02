@@ -1,4 +1,4 @@
-const db = require('../../conf/db.json')[process.env.NODE_ENV || 'development'];
+const db = require('../../conf/db')[process.env.NODE_ENV || 'development'];
 const Sequelize = require('sequelize');
 
 const sequelize = new Sequelize(db.database, db.username, db.password, {

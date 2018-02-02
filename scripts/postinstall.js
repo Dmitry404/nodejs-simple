@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const dbConf = require('../conf/db.json');
+const dbConf = require('../conf/db');
 const winston = require('winston');
 const fs = require('fs');
 const path = require('path');
@@ -30,7 +30,7 @@ const result = spawnSync('docker', [
   '-e', `MYSQL_DATABASE=${conf.db.database}`,
   '-e', `MYSQL_USER=${conf.db.username}`,
   '-e', `MYSQL_PASSWORD=${conf.db.password}`,
-  '-e', 'MYSQL_RANDOM_ROOT_PASSWORD=yes',
+  '-e', 'MYSQL_ROOT_PASSWORD=$eCReT',
   '-d', conf.docker.image,
 ]);
 
@@ -41,7 +41,7 @@ if (result.status === 0) {
     'stop', conf.docker.container,
   ]);
 
-  winston.info('You can run the application now with "npm start"');
+  winston.info('You can run the application now with "npm run start:dev or npm run start:prod"');
 } else {
   winston.error(`Something weird has happened. Would you be kind to have a look? [${result.stderr.toString()}]`);
 }

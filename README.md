@@ -6,19 +6,25 @@ This is a simple office library service created for learning purposes
 npm install
 ```
 
-- run
+- run in a dev environment (setups DB as docker image, creates DB structure and populates "demo" data for development)
 
 ```sh
-npm start
+npm run start:dev
 ```
 
-- populate db with demo data
+- run in a production-like environment (runs the app using docker-compose, also includes "demo" data)
 
 ```sh
-npm run db:populate
+npm run start:prod
 ```
 
-- remove docker containers
+- run tests
+
+```sh
+npm test
+```
+
+- uninstall (remove docker containers)
 
 ```
 npm run uninstall
