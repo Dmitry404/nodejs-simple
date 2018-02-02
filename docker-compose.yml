@@ -1,9 +1,15 @@
 version: "3"
 services:
+  nodejs-bookshelf-app-lb:
+    build: ./nginx
+    ports: 
+      - 4000:80
+    depends_on:
+      - nodejs-bookshelf-app-prod
+    links:
+      - nodejs-bookshelf-app-prod
   nodejs-bookshelf-app-prod:
     build: .
-    ports: 
-      - 4000:4000
     environment:
       - NODE_ENV=production
       - MYSQL_DATABASE=bookshelf
