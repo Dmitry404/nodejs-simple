@@ -17,6 +17,7 @@ services:
       - MYSQL_PASSWORD=secret
     depends_on:
       - nodejs-bookshelf-db-prod
+    command: ["./wait-for-it.sh", "nodejs-bookshelf-db-prod:3306", "--", "npm", "start"]
   nodejs-bookshelf-db-prod:
     image: mysql:5.5
     environment:
